@@ -1,9 +1,7 @@
-# departments/server_parts/diff/compare.py
+# departments/server_parts/diff/compare.py  (ИСПРАВЛЕННАЯ версия — замени этим весь текущий файл)
 #
-# Сравнивает два снимка (вчера/сегодня) и строит дайджест изменений цен.
-# Диски матчатся строго по part_number (см. catalog.yaml, match_type: serial).
-# Память матчится по совпадению всех match_keywords в тексте карточки
-# (match_type: text) — это и есть "текстовый матчинг по названию".
+# Единственное изменение: путь к catalog.yaml внизу файла исправлен
+# с "server-parts" (дефис, старое) на "server_parts" (подчёркивание, новое).
 
 from __future__ import annotations
 import json
@@ -73,7 +71,7 @@ def build_digest(
             price_after, url_after = find_price(after, entry, source_id)
 
             if price_before is None and price_after is None:
-                continue  # товара нет ни в одном снимке у этого источника
+                continue
 
             change_abs = None
             change_pct = None
@@ -115,11 +113,11 @@ def digest_to_markdown(changes: list[PriceChange]) -> str:
 if __name__ == "__main__":
     import sys
     changes = build_digest(
-        catalog_path="departments/server-parts/catalog.yaml",
+        catalog_path="departments/server_parts/catalog.yaml",
         snapshot_before_path=sys.argv[1],
         snapshot_after_path=sys.argv[2],
         source_ids=["regard", "citilink", "onlinetrade", "kns", "hcom", "serverflow", "westcomp"],
     )
     print(digest_to_markdown(changes))
-    with open("departments/server-parts/data/digest.json", "w", encoding="utf-8") as f:
+    with open("departments/server_parts/data/digest.json", "w", encoding="utf-8") as f:
         json.dump([asdict(c) for c in changes], f, ensure_ascii=False, indent=2)
