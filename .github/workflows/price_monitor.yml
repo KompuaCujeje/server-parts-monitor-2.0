@@ -1,0 +1,50 @@
+# .github/workflows/price_monitor.yml
+#
+# Автозапуск мониторинга цен: дважды в день (10:00 и 15:00 по Москве)
+# + ручной запуск кнопкой "Run workflow" на вкладке Actions.
+#
+# Время в cron указывается в UTC. Москва = UTC+3, поэтому:
+#   10:00 МСК -> 07:00 UTC  ("0 7 * * *")
+#   15:00 МСК -> 12:00 UTC  ("0 12 * * *")
+
+name: Price Monitor
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  collect-and-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 pyyaml
+
+      - name: Run parsers (collect today's snapshot)
+        run: |
+          python -m departments.server-parts.run_all_parsers
+
+      - name: Build diff digest (compare with yesterday)
+        run: |
+          python departments/server-parts/diff/compare.py \
+            departments/server-parts/data/snapshot-yesterday.json \
+            departments/server-parts/data/snapshot-today.json
+
+      - name: Commit updated snapshots and digest
+        run: |
+          git config user.name "price-monitor-bot"
+          git config user.email "actions@github.com"
+          git add departments/server-parts/data/
+          git diff --staged --quiet || git commit -m "chore: обновление снимка цен $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
