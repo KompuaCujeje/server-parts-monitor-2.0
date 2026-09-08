@@ -28,23 +28,25 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install requests beautifulsoup4 pyyaml
+        run: pip install requests beautifulsoup4 pyyaml
 
       - name: Run parsers (collect today's snapshot)
-        run: |
-          python -m departments.server-parts.run_all_parsers
+        run: python departments/server_parts/run_all_parsers.py
 
-      - name: Build diff digest (compare with yesterday)
+      - name: Build diff digest (compare with yesterday, if exists)
         run: |
-          python departments/server-parts/diff/compare.py \
-            departments/server-parts/data/snapshot-yesterday.json \
-            departments/server-parts/data/snapshot-today.json
+          if [ -f departments/server_parts/data/snapshot-yesterday.json ]; then
+            python departments/server_parts/diff/compare.py \
+              departments/server_parts/data/snapshot-yesterday.json \
+              departments/server_parts/data/snapshot-today.json
+          else
+            echo "Вчерашнего снимка ещё нет — это первый запуск, дайджест появится завтра."
+          fi
 
       - name: Commit updated snapshots and digest
         run: |
           git config user.name "price-monitor-bot"
           git config user.email "actions@github.com"
-          git add departments/server-parts/data/
+          git add departments/server_parts/data/
           git diff --staged --quiet || git commit -m "chore: обновление снимка цен $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
