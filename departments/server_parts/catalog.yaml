@@ -1,0 +1,63 @@
+# departments/server_parts/catalog.yaml
+#
+# Каталог соответствий: список товаров, которые мы отслеживаем.
+# Для дисков — matching строго по серийному/партийному номеру (match_type: serial).
+# Для памяти — текстовый матчинг по названию/характеристикам (match_type: text).
+#
+# Чтобы добавить новый товар — допиши блок в products. Ничего в коде менять не нужно.
+
+products:
+  # --- Диски (сопоставление по парт-номеру) ---
+  - id: ssd-samsung-pm893-3840
+    category: disk
+    match_type: serial
+    part_number: "MZ7L33T8HBLT-00A07"
+    display_name: "Samsung PM893 3.84TB SATA SSD"
+    # синонимы части номера, которые встречаются в названиях товаров на сайтах
+    aliases:
+      - "MZ7L33T8HBLT-00A07"
+      - "MZ7L33T8HBLT"
+
+  # --- Память (текстовый матчинг по модели/характеристикам) ---
+  - id: ram-samsung-ddr4-32gb-3200
+    category: ram
+    match_type: text
+    display_name: "Samsung DDR4 32ГБ 3200МГц"
+    match_keywords:
+      - "samsung"
+      - "ddr4"
+      - "32"
+      - "3200"
+
+  - id: ram-samsung-ddr4-32gb-2933
+    category: ram
+    match_type: text
+    display_name: "Samsung DDR4 32ГБ 2933МГц"
+    match_keywords:
+      - "samsung"
+      - "ddr4"
+      - "32"
+      - "2933"
+
+  - id: ram-samsung-ddr4-64gb-2933
+    category: ram
+    match_type: text
+    display_name: "Samsung DDR4 64ГБ 2933МГц"
+    match_keywords:
+      - "samsung"
+      - "ddr4"
+      - "64"
+      - "2933"
+
+  - id: ram-samsung-ddr4-64gb-3200
+    category: ram
+    match_type: text
+    display_name: "Samsung DDR4 64ГБ 3200МГц"
+    match_keywords:
+      - "samsung"
+      - "ddr4"
+      - "64"
+      - "3200"
+
+# Дальше просто добавляй новые блоки — для дисков part_number обязателен,
+# для памяти достаточно набора ключевых слов.
