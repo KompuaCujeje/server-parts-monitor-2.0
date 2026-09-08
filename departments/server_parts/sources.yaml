@@ -1,0 +1,65 @@
+# departments/server_parts/sources.yaml
+#
+# Список сайтов для мониторинга. Чтобы добавить новый сайт — допиши блок сюда
+# и создай соответствующий parser-модуль в parsers/<id>.py по образцу regard.py.
+# Менять код "ядра" (diff, core.kitchen) не нужно.
+
+sources:
+  - id: regard
+    name: "Регард"
+    base_url: "https://www.regard.ru"
+    category_urls:
+      disk: "https://www.regard.ru/catalog/1016/servernye-zhestkie-diski-hdd"
+      ram: "https://www.regard.ru/reciept/210532/servernaya-operativnaya-pamyat-ddr4"
+    parser_module: "parsers.regard"
+
+  - id: citilink
+    name: "Ситилинк"
+    base_url: "https://www.citilink.ru"
+    category_urls:
+      disk: "https://www.citilink.ru/catalog/zhestkie-diski-serverov/"   # проверить точный URL перед запуском
+      ram: "https://www.citilink.ru/catalog/pamyat-dlya-serverov/"
+    parser_module: "parsers.citilink"
+
+  - id: onlinetrade
+    name: "Онлайн Трейд"
+    base_url: "https://www.onlinetrade.ru"
+    category_urls:
+      disk: "https://www.onlinetrade.ru/catalogue/servernye_hdd-c4239/"
+      ram: "https://www.onlinetrade.ru/catalogue/"   # уточнить точный раздел серверной памяти
+    parser_module: "parsers.onlinetrade"
+
+  - id: kns
+    name: "КНС"
+    base_url: "https://www.kns.ru"
+    category_urls:
+      disk: "https://www.kns.ru/catalog/"    # уточнить точный раздел дисков
+      ram: "https://www.kns.ru/catalog/"     # уточнить точный раздел памяти
+    parser_module: "parsers.kns"
+
+  - id: hcom
+    name: "Х-Ком"
+    base_url: "https://www.x-com.ru"
+    category_urls:
+      disk: ""   # заполнить после проверки структуры каталога
+      ram: ""
+    parser_module: "parsers.hcom"
+
+  - id: serverflow
+    name: "Serverflow"
+    base_url: "https://serverflow.ru"
+    category_urls:
+      disk: ""
+      ram: ""
+    parser_module: "parsers.serverflow"
+
+  - id: westcomp
+    name: "Westcomp"
+    base_url: "https://westcomp.ru"
+    category_urls:
+      disk: ""
+      ram: ""
+    parser_module: "parsers.westcomp"
+
+# Пустые category_urls — сайты, чью точную структуру каталога нужно проверить
+# вручную (открыть раздел "серверные диски"/"серверная память" и вставить URL).
